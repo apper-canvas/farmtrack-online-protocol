@@ -30,8 +30,8 @@ const CropList = ({ onAdd, onEdit }) => {
     try {
       setLoading(true);
       setError("");
-      const data = await cropService.getAll();
-      setCrops(data);
+const response = await cropService.getAll();
+      setCrops(response?.data || []);
     } catch (err) {
       setError("Failed to load crops");
     } finally {
