@@ -63,7 +63,10 @@ const Dashboard = () => {
   if (loading) return <Loading type="stats" />;
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
-  const { crops, tasks, expenses } = dashboardData;
+// Safely destructure with array fallbacks to prevent .filter errors
+  const crops = Array.isArray(dashboardData.crops) ? dashboardData.crops : [];
+  const tasks = Array.isArray(dashboardData.tasks) ? dashboardData.tasks : [];
+  const expenses = Array.isArray(dashboardData.expenses) ? dashboardData.expenses : [];
   
   // Calculate statistics
   const activeCrops = crops.filter(crop => crop.status !== "harvested").length;
@@ -101,8 +104,8 @@ const Dashboard = () => {
     return iconMap[type] || "CheckSquare";
   };
 
-  const getCropName = (cropId) => {
-    const crop = crops.find(c => c.Id === parseInt(cropId));
+const getCropName = (cropId) => {
+    const crop = crops.find(c => c.id === parseInt(cropId));
     return crop ? crop.name : "All Crops";
   };
 
@@ -219,8 +222,8 @@ const Dashboard = () => {
               {recentTasks.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">No pending tasks</p>
               ) : (
-                recentTasks.map((task) => (
-                  <div key={task.Id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+recentTasks.map((task) => (
+                  <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                     <div className="p-2 bg-gradient-to-br from-secondary-100 to-accent-100 rounded-lg">
                       <ApperIcon name={getTaskIcon(task.type)} className="h-4 w-4 text-secondary-600" />
                     </div>
@@ -266,8 +269,8 @@ const Dashboard = () => {
               {recentExpenses.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">No expenses recorded</p>
               ) : (
-                recentExpenses.map((expense) => (
-                  <div key={expense.Id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+recentExpenses.map((expense) => (
+                  <div key={expense.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-gradient-to-br from-accent-100 to-primary-100 rounded-lg">
                         <ApperIcon name="Receipt" className="h-4 w-4 text-accent-600" />
