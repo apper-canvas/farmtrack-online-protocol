@@ -123,12 +123,12 @@ const TaskList = ({ onAdd, onEdit }) => {
     return iconMap[type] || "CheckSquare";
   };
 
-  const tabs = [
-    { key: "all", label: "All Tasks", count: tasks.length },
-    { key: "today", label: "Today", count: tasks.filter(t => !t.completed && isToday(parseISO(t.dueDate))).length },
-    { key: "upcoming", label: "Upcoming", count: tasks.filter(t => !t.completed && isFuture(parseISO(t.dueDate))).length },
-    { key: "overdue", label: "Overdue", count: tasks.filter(t => !t.completed && isPast(parseISO(t.dueDate)) && !isToday(parseISO(t.dueDate))).length },
-    { key: "completed", label: "Completed", count: tasks.filter(t => t.completed).length }
+const tabs = [
+    { key: "all", label: "All Tasks", count: (tasks || []).length },
+    { key: "today", label: "Today", count: (tasks || []).filter(t => !t.completed && isToday(parseISO(t.dueDate))).length },
+    { key: "upcoming", label: "Upcoming", count: (tasks || []).filter(t => !t.completed && isFuture(parseISO(t.dueDate))).length },
+    { key: "overdue", label: "Overdue", count: (tasks || []).filter(t => !t.completed && isPast(parseISO(t.dueDate)) && !isToday(parseISO(t.dueDate))).length },
+    { key: "completed", label: "Completed", count: (tasks || []).filter(t => t.completed).length }
   ];
 
   if (loading) return <Loading />;
