@@ -32,10 +32,10 @@ const Tasks = () => {
     }
   }, [location.state]);
 
-  const loadCrops = async () => {
+const loadCrops = async () => {
     try {
-      const data = await cropService.getAll();
-      setCrops(data);
+      const response = await cropService.getAll();
+      setCrops(response?.data || []);
     } catch (err) {
       toast.error("Failed to load crops");
     }
