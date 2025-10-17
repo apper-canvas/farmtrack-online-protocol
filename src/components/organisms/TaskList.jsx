@@ -34,10 +34,10 @@ const TaskList = ({ onAdd, onEdit }) => {
       setLoading(true);
       setError("");
       const [taskData, cropData] = await Promise.all([
-        taskService.getAll(),
+taskService.getAll(),
         cropService.getAll()
       ]);
-      setTasks(taskData);
+      setTasks(taskData?.data || []);
       setCrops(cropData);
     } catch (err) {
       setError("Failed to load tasks");
@@ -124,11 +124,11 @@ const TaskList = ({ onAdd, onEdit }) => {
   };
 
 const tabs = [
-    { key: "all", label: "All Tasks", count: (tasks || []).length },
-    { key: "today", label: "Today", count: (tasks || []).filter(t => !t.completed && isToday(parseISO(t.dueDate))).length },
-    { key: "upcoming", label: "Upcoming", count: (tasks || []).filter(t => !t.completed && isFuture(parseISO(t.dueDate))).length },
-    { key: "overdue", label: "Overdue", count: (tasks || []).filter(t => !t.completed && isPast(parseISO(t.dueDate)) && !isToday(parseISO(t.dueDate))).length },
-    { key: "completed", label: "Completed", count: (tasks || []).filter(t => t.completed).length }
+    { key: "all", label: "All Tasks", count: tasks.length },
+    { key: "today", label: "Today", count: tasks.filter(t => !t.completed && t.dueDate && isToday(parseISO(t.dueDate))).length },
+    { key: "upcoming", label: "Upcoming", count: tasks.filter(t => !t.completed && t.dueDate && isFuture(parseISO(t.dueDate))).length },
+    { key: "overdue", label: "Overdue", count: tasks.filter(t => !t.completed && t.dueDate && isPast(parseISO(t.dueDate)) && !isToday(parseISO(t.dueDate))).length },
+    { key: "completed", label: "Completed", count: tasks.filter(t => t.completed).length }
   ];
 
   if (loading) return <Loading />;
