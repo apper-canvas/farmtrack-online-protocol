@@ -37,8 +37,8 @@ const TaskList = ({ onAdd, onEdit }) => {
 taskService.getAll(),
         cropService.getAll()
       ]);
-      setTasks(taskData?.data || []);
-      setCrops(cropData);
+setTasks(taskData?.data || []);
+      setCrops(cropData?.data || []);
     } catch (err) {
       setError("Failed to load tasks");
     } finally {
